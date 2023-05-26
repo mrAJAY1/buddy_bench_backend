@@ -5,11 +5,14 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.js\""
   },
   "author": "Ajay Prakash  P P",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -17,5 +20,13 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.0",
     "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8"
   }
 }
