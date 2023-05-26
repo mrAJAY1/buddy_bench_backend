@@ -1,13 +1,18 @@
 const router = require("express").Router();
 const controller = require("../controllers/userController.js");
 
+// Routes for authentication
+router.post("/login", controller.login);
+router.post("/signup", controller.signup);
+router.post("/logout", controller.logout);
+
+// Routes for user management
+router.put("/update-user/:id", controller.updateUser);
+router.delete("/delete-user/:id", controller.deleteUser);
+
+// Default route
 router.get("/", (req, res) => {
-  res.send("server is active");
+  res.send("Server is active");
 });
-router.post("/login",(req,res)=>{});
-router.post("/signup",(req,res)=>{});
-router.post("/logout",(req,res)=>{})
-router.put("/update-user/:id",(req,res)=>{});
-router.delete("/delete-user/:id",(req,res)=>{});
 
 module.exports = router;
