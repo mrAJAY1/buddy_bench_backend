@@ -8,9 +8,7 @@ module.exports = {
 
     // Check if both username and password are present in request body
     if (!username || !password) {
-      return res
-        .status(400)
-        .json({ message: 'Username and password are required' });
+      return res.status(400).json({ message: 'Username and password are required' });
     }
 
     try {
@@ -27,8 +25,7 @@ module.exports = {
 
       // If passwords match, return public user details in response
       if (isEqual) {
-        const { password, __v, createdAt, updatedAt, ...publicUserDetails } =
-          user._doc;
+        const { password, __v, createdAt, updatedAt, ...publicUserDetails } = user._doc;
         return res.json({ data: publicUserDetails });
       }
 
@@ -44,9 +41,7 @@ module.exports = {
   signup: async ({ body }, res) => {
     // Check if both username and password are present in request body
     if (!body.username || !body.password) {
-      return res
-        .status(400)
-        .json({ message: 'Username and password are required' });
+      return res.status(400).json({ message: 'Username and password are required' });
     }
 
     try {
@@ -65,8 +60,7 @@ module.exports = {
       });
 
       // Return public user details in response
-      const { password, __v, createdAt, updatedAt, ...publicUserDetails } =
-        newUser._doc;
+      const { password, __v, createdAt, updatedAt, ...publicUserDetails } = newUser._doc;
       return res.json({ data: publicUserDetails });
     } catch (err) {
       console.error(err);
