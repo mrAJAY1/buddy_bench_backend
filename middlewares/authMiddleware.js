@@ -27,6 +27,8 @@ async function authMiddleware(req, res, next) {
 
     // If refresh token not found, return error response
     if (!refreshToken) {
+      res.clearCookie('accessToken');
+      res.clearCookie('refreshToken');
       return res.status(401).json({ message: 'Refresh token not found' });
     }
 
@@ -38,6 +40,8 @@ async function authMiddleware(req, res, next) {
 
     // If refresh token is invalid, return error response
     if (!isRefreshTokenValid) {
+      res.clearCookie('accessToken');
+      res.clearCookie('refreshToken');
       return res.status(401).json({ message: 'Invalid refresh token' });
     }
 
@@ -55,7 +59,7 @@ async function authMiddleware(req, res, next) {
 
       res.cookie('refresh_token', newRefreshToken, {
         httpOnly: true,
-        maxAge: 2592000000, // 30 days
+        maxAge: 604800000, // 7 days
       });
 
       // Set user ID from new access token in request object

@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const UserModel = require('../models/user.js');
+const { generateTokens } = require('../helpers/authFunctions.js');
 
 module.exports = {
   // LOGIN
@@ -26,6 +27,18 @@ module.exports = {
       // If passwords match, return public user details in response
       if (isEqual) {
         const { password, __v, createdAt, updatedAt, ...publicUserDetails } = user._doc;
+        const { accessToken, refreshToken } = await generateTokens(publicUserDetails);
+        // Set new access token and refresh token in cookies
+        res.cookie('access_token', accessToken, {
+          httpOnly: true,
+          maxAge: 900000, // 15 minutes
+        });
+
+        res.cookie('refresh_token', refreshToken, {
+          httpOnly: true,
+          maxAge: 604800000, // 7 days
+        });
+
         return res.json({ data: publicUserDetails });
       }
 
@@ -61,6 +74,19 @@ module.exports = {
 
       // Return public user details in response
       const { password, __v, createdAt, updatedAt, ...publicUserDetails } = newUser._doc;
+      const { accessToken, refreshToken } = await generateTokens(publicUserDetails);
+
+      // Set new access token and refresh token in cookies
+      res.cookie('access_token', accessToken, {
+        httpOnly: true,
+        maxAge: 900000, // 15 minutes
+      });
+
+      res.cookie('refresh_token', refreshToken, {
+        httpOnly: true,
+        maxAge: 604800000, // 7 days
+      });
+
       return res.json({ data: publicUserDetails });
     } catch (err) {
       console.error(err);
@@ -69,7 +95,10 @@ module.exports = {
   },
 
   // Logout functionality is not implemented yet
-  logout: async (req, res) => {},
+  logout: async (req, res) => {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+  },
 
   // Update user functionality is not implemented yet
   updateUser: async ({ params, body }, res) => {},
